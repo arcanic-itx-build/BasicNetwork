@@ -11,26 +11,28 @@ import XCTest
 
 class BasicNetworkTests: XCTestCase {
     
+    var network:BasicNetwork?
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        self.network = BasicNetwork()
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testRequestWithoutParams() {
+        if let network = self.network {
+            network.server = "http://google.com"
+            network.request(endPoint: BasicNetwork.EndPoint(""), parameters: nil, method: .get, completionHandler: { (response) in
+                switch response {
+                case .error(let error, report: let report):
+                    print(report.prettyPrint())
+                case .success(let data, report: let report):
+                    print(report.prettyPrint())
+                }
+            })
+            
+            
         }
     }
+    
     
 }

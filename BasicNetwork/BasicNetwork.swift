@@ -15,12 +15,12 @@ public class BasicNetwork {
     public static let defaultCompletionHandler:CompletionHandler = { (response) in
         switch response {
         case .error(let error, let report):
-            print("ERROR")
+            print("Error")
             print(error)
             print(report.prettyPrint())
-        case .success(let json,let report):
+        case .success(let data,let report):
             print("Success")
-            print(json)
+            print(String(data: data, encoding: .utf8) ?? "Can't decode data: \(data)")
             print(report.prettyPrint())
         }
     }
@@ -62,7 +62,6 @@ public class BasicNetwork {
     public enum BasicNetworkError:Error {
         case httpError(statusCode:Int,description:String)
         case urlCreationError(String)
-        case jsonSerializationError(String)
         case dataMissingError
     }
     
@@ -101,6 +100,7 @@ public class BasicNetwork {
     public var mode:NetworkMode = .localhost
     public var timeOut:TimeInterval = 5
     public var cachePolicy:URLRequest.CachePolicy = .reloadRevalidatingCacheData
+    
     
     public func request(endPoint:EndPoint,parameters:[String:Any]?,method:HTTPMethod,completionHandler:CompletionHandler? = nil) {
         

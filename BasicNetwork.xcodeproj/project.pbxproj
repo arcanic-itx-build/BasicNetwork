@@ -11,6 +11,7 @@
 		A96B66B91EAE16A900BE3DDC /* BasicNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66B81EAE16A900BE3DDC /* BasicNetworkTests.swift */; };
 		A96B66BB1EAE16A900BE3DDC /* BasicNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = A96B66AD1EAE16A900BE3DDC /* BasicNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
+		A96B67211EAE8B6700BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +157,7 @@
 					};
 					A96B66B21EAE16A900BE3DDC = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = LS4W3D485E;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -210,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A96B66B91EAE16A900BE3DDC /* BasicNetworkTests.swift in Sources */,
+				A96B67211EAE8B6700BE3DDC /* BasicNetwork.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +276,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = LS4W3D485E;
 				INFOPLIST_FILE = BasicNetworkTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.theisegeberg.BasicNetworkTests;
@@ -285,6 +289,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = LS4W3D485E;
 				INFOPLIST_FILE = BasicNetworkTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.theisegeberg.BasicNetworkTests;
@@ -398,6 +403,7 @@
 				A96B66BE1EAE16A900BE3DDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A96B66BF1EAE16A900BE3DDC /* Build configuration list for PBXNativeTarget "BasicNetworkTests" */ = {
 			isa = XCConfigurationList;
@@ -406,6 +412,7 @@
 				A96B66C11EAE16A900BE3DDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A9C1894A1EA50794008A57E3 /* Build configuration list for PBXProject "BasicNetwork" */ = {
 			isa = XCConfigurationList;
