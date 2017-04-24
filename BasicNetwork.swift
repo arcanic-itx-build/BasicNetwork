@@ -170,7 +170,7 @@ public class BasicNetwork {
             }
             
             
-            completionHandler?(Response.success(json,report: report))
+            completionHandler?(Response.success(data,report: report))
             
         }
         task.resume()
