@@ -34,7 +34,7 @@ public class BasicNetwork {
             }
         }
         
-        init(_ part:String...) {
+        public init(_ part:String...) {
             parts = part
         }
     }
@@ -101,6 +101,10 @@ public class BasicNetwork {
     public var mode:NetworkMode = .localhost
     public var timeOut:TimeInterval = 5
     public var cachePolicy:URLRequest.CachePolicy = .reloadRevalidatingCacheData
+    
+    public init() {
+        
+    }
     
     public func request(endPoint:EndPoint,parameters:[String:Any]?,method:HTTPMethod,completionHandler:CompletionHandler? = nil) {
         
