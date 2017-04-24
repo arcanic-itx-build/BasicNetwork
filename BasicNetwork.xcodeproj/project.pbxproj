@@ -10,7 +10,7 @@
 		A96B66B41EAE16A900BE3DDC /* BasicNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96B66AB1EAE16A900BE3DDC /* BasicNetwork.framework */; };
 		A96B66B91EAE16A900BE3DDC /* BasicNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66B81EAE16A900BE3DDC /* BasicNetworkTests.swift */; };
 		A96B66BB1EAE16A900BE3DDC /* BasicNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = A96B66AD1EAE16A900BE3DDC /* BasicNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A96B66C21EAE16BC00BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C189651EA507C3008A57E3 /* BasicNetwork.swift */; };
+		A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,7 @@
 		A96B66B31EAE16A900BE3DDC /* BasicNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BasicNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A96B66B81EAE16A900BE3DDC /* BasicNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetworkTests.swift; sourceTree = "<group>"; };
 		A96B66BA1EAE16A900BE3DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A9C189651EA507C3008A57E3 /* BasicNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = SOURCE_ROOT; };
+		A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,7 @@
 		A96B66AC1EAE16A900BE3DDC /* BasicNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				A9C189651EA507C3008A57E3 /* BasicNetwork.swift */,
+				A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */,
 				A96B66AD1EAE16A900BE3DDC /* BasicNetwork.h */,
 				A96B66AE1EAE16A900BE3DDC /* Info.plist */,
 			);
@@ -151,6 +151,7 @@
 				TargetAttributes = {
 					A96B66AA1EAE16A900BE3DDC = {
 						CreatedOnToolsVersion = 8.3.1;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					A96B66B21EAE16A900BE3DDC = {
@@ -200,7 +201,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96B66C21EAE16BC00BE3DDC /* BasicNetwork.swift in Sources */,
+				A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +227,7 @@
 		A96B66BD1EAE16A900BE3DDC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -238,6 +240,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.theisegeberg.BasicNetwork;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -247,6 +250,7 @@
 		A96B66BE1EAE16A900BE3DDC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
