@@ -22,6 +22,50 @@ extension URL {
     
 }
 
+extension String {
+    public func jsonIndented() -> String {
+        let characters = self.characters
+        
+        var indentCount:Int = 0
+        var finalString = ""
+        
+        characters.forEach { (character) in
+            
+            if character == "}" || character == "]" {
+                indentCount = indentCount - 1
+                finalString.append("\n")
+                finalString.append(String(repeating: " ", count: indentCount))
+            }
+            
+            finalString.append(character)
+            
+            if character == "," {
+                finalString.append("\n")
+                finalString.append(String(repeating: " ", count: indentCount))
+            }
+            
+            if character == "{" || character == "[" {
+                indentCount = indentCount + 1
+                finalString.append("\n")
+                finalString.append(String(repeating: " ", count: indentCount))
+            }
+            
+            switch character {
+            case "{":
+                indentCount = indentCount + 1
+                break
+            case "}":
+                indentCount = indentCount - 1
+                break
+            default:
+                break
+            }
+        }
+        return finalString
+        
+    }
+}
+
 
 public class BasicNetwork {
     
@@ -101,8 +145,9 @@ public class BasicNetwork {
         public func prettyPrint() -> String {
             return "===> Request report [\(statusCode ?? -1)] =========||\n\(url?.absoluteString ?? "?") (\(method?.description ?? "?"))\n" +
             "\(requestBody ?? "[No request body]")\n" +
+            "----------\n" +
             "\(responseBody ?? "[No response body]")\n" +
-            "=========\n"
+            "[==== END ===]\n"
         }
     }
     
@@ -142,7 +187,7 @@ public class BasicNetwork {
                     let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
                     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                     request.httpBody = requestBody
-                    report.requestBody = String(data: requestBody, encoding: .utf8)
+                    report.requestBody = String(data: requestBody, encoding: .utf8)?.jsonIndented()
                 }
                 
             } catch let error {
@@ -171,7 +216,8 @@ public class BasicNetwork {
                 return
             }
             
-            report.responseBody = String(data:data, encoding:.utf8) ?? "Unable to decode body"
+            report.responseBody = String(data:data, encoding:.utf8)?.jsonIndented() ?? "Unable to decode body"
+            
             
             if let httpResponse = response as? HTTPURLResponse {
                 
@@ -185,9 +231,6 @@ public class BasicNetwork {
             }
             
             
-            if let rawResponse = String(data: data, encoding: .utf8) {
-                report.responseBody = rawResponse
-            }
             
             DispatchQueue.main.async {
                 completionHandler?(Response.success(data,report: report))
