@@ -74,11 +74,11 @@ public class BasicNetwork {
         case .error(let error, let report):
             print("Error")
             print(error)
-            print(report.prettyPrint())
+            print(report?.prettyPrint() ?? "No report generated")
         case .success(let data,let report):
             print("Success")
             print(String(data: data, encoding: .utf8) ?? "Can't decode data: \(data)")
-            print(report.prettyPrint())
+            print(report?.prettyPrint() ?? "No report generated")
         }
     }
     
@@ -123,8 +123,8 @@ public class BasicNetwork {
     }
     
     public enum Response {
-        case error(Error,report:RequestReport)
-        case success(Data,report:RequestReport)
+        case error(Error,report:RequestReport?)
+        case success(Data,report:RequestReport?)
     }
     
     public struct RequestReport {
@@ -158,6 +158,7 @@ public class BasicNetwork {
     public var mode:NetworkMode = .localhost
     public var timeOut:TimeInterval = 5
     public var cachePolicy:URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
+    public var generateReports:Bool = true
     
     public init() {
         
@@ -165,7 +166,11 @@ public class BasicNetwork {
 
     public func request(endPoint:EndPoint,parameters:[String:Any]?,method:HTTPMethod,completionHandler:CompletionHandler? = nil) {
         
-        var report = RequestReport()
+        var report:RequestReport?
+        
+        if self.generateReports {
+            report = RequestReport()
+        }
         
         guard let url = URL(string:"\(self.server)/\(endPoint.description)") else {
             completionHandler?(Response.error(BasicNetworkError.urlCreationError("\(self.server)\(endPoint)"),report: report))
@@ -187,7 +192,7 @@ public class BasicNetwork {
                     let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
                     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                     request.httpBody = requestBody
-                    report.requestBody = String(data: requestBody, encoding: .utf8)?.jsonIndented()
+                    report?.requestBody = String(data: requestBody, encoding: .utf8)?.jsonIndented()
                 }
                 
             } catch let error {
@@ -195,16 +200,16 @@ public class BasicNetwork {
             }
         }
         
-        report.url = request.url
-        report.method = method
+        report?.url = request.url
+        report?.method = method
         
         
-        report.state = .requestSent
+        report?.state = .requestSent
         
         let task = URLSession.shared.dataTask(with: request) { data,response,error in
 
-            report.state = .responseReceived
-            report.requestHeaders = request.allHTTPHeaderFields
+            report?.state = .responseReceived
+            report?.requestHeaders = request.allHTTPHeaderFields
             
             guard error == nil else {
                 completionHandler?(Response.error(error!,report: report))
@@ -216,13 +221,13 @@ public class BasicNetwork {
                 return
             }
             
-            report.responseBody = String(data:data, encoding:.utf8)?.jsonIndented() ?? "Unable to decode body"
+            report?.responseBody = String(data:data, encoding:.utf8)?.jsonIndented() ?? "Unable to decode body"
             
             
             if let httpResponse = response as? HTTPURLResponse {
                 
-                report.statusCode = httpResponse.statusCode
-                report.responseHeaders = httpResponse.allHeaderFields
+                report?.statusCode = httpResponse.statusCode
+                report?.responseHeaders = httpResponse.allHeaderFields
                 
                 if (httpResponse.statusCode >= 400) {
                     completionHandler?(Response.error(BasicNetworkError.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)),report: report))
