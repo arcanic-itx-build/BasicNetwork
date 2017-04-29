@@ -9,6 +9,19 @@
 import Foundation
 
 
+extension URL {
+    
+    public func withQueryStringParameters(parameters:[String:Any]) -> URL {
+        
+        let queryString = parameters.flatMap { (keyValue) -> String? in
+            return "\(keyValue.key)=\(keyValue.value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        }.joined(separator: "&")
+        
+        return URL(string: "\(self.absoluteString)?\(queryString)")!
+    }
+    
+}
+
 
 public class BasicNetwork {
     
@@ -99,7 +112,7 @@ public class BasicNetwork {
     public var server:String = "http://0.0.0.0:8080"
     public var mode:NetworkMode = .localhost
     public var timeOut:TimeInterval = 5
-    public var cachePolicy:URLRequest.CachePolicy = .reloadRevalidatingCacheData
+    public var cachePolicy:URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     
     public init() {
         
@@ -114,27 +127,31 @@ public class BasicNetwork {
             return
         }
         
-        report.url = url
-        report.method = method
         
         var request = URLRequest(url: url, cachePolicy: self.cachePolicy, timeoutInterval: self.timeOut)
         
         request.httpMethod = method.description
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         if let parameters = parameters {
             do {
-                
-                let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-                
-                request.httpBody = requestBody
-    
-                report.requestBody = String(data: requestBody, encoding: .utf8)
+                switch method {
+                case .get:
+                    request.url = request.url?.withQueryStringParameters(parameters: parameters)
+                    
+                case .post:
+                    let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.httpBody = requestBody
+                    report.requestBody = String(data: requestBody, encoding: .utf8)
+                }
                 
             } catch let error {
                 completionHandler?(Response.error(error,report: report))
             }
         }
+        
+        report.url = request.url
+        report.method = method
         
         
         report.state = .requestSent
@@ -172,8 +189,9 @@ public class BasicNetwork {
                 report.responseBody = rawResponse
             }
             
-            
-            completionHandler?(Response.success(data,report: report))
+            DispatchQueue.main.async {
+                completionHandler?(Response.success(data,report: report))
+            }
             
         }
         task.resume()
