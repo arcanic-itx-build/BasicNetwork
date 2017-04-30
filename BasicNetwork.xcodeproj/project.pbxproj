@@ -12,6 +12,10 @@
 		A96B66BB1EAE16A900BE3DDC /* BasicNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = A96B66AD1EAE16A900BE3DDC /* BasicNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
 		A96B67211EAE8B6700BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
+		A9C8B6051EB613D000C12559 /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B6041EB613D000C12559 /* EndPoint.swift */; };
+		A9C8B6071EB613F500C12559 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B6061EB613F500C12559 /* HTTPMethod.swift */; };
+		A9C8B6091EB6140B00C12559 /* BasicNetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B6081EB6140B00C12559 /* BasicNetworkError.swift */; };
+		A9C8B60B1EB6141F00C12559 /* RequestReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B60A1EB6141F00C12559 /* RequestReport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +36,10 @@
 		A96B66B81EAE16A900BE3DDC /* BasicNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetworkTests.swift; sourceTree = "<group>"; };
 		A96B66BA1EAE16A900BE3DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
+		A9C8B6041EB613D000C12559 /* EndPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
+		A9C8B6061EB613F500C12559 /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		A9C8B6081EB6140B00C12559 /* BasicNetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicNetworkError.swift; sourceTree = "<group>"; };
+		A9C8B60A1EB6141F00C12559 /* RequestReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestReport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +65,10 @@
 			isa = PBXGroup;
 			children = (
 				A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */,
+				A9C8B60A1EB6141F00C12559 /* RequestReport.swift */,
+				A9C8B6081EB6140B00C12559 /* BasicNetworkError.swift */,
+				A9C8B6061EB613F500C12559 /* HTTPMethod.swift */,
+				A9C8B6041EB613D000C12559 /* EndPoint.swift */,
 				A96B66AD1EAE16A900BE3DDC /* BasicNetwork.h */,
 				A96B66AE1EAE16A900BE3DDC /* Info.plist */,
 			);
@@ -203,7 +215,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9C8B6091EB6140B00C12559 /* BasicNetworkError.swift in Sources */,
+				A9C8B6051EB613D000C12559 /* EndPoint.swift in Sources */,
+				A9C8B60B1EB6141F00C12559 /* RequestReport.swift in Sources */,
 				A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */,
+				A9C8B6071EB613F500C12559 /* HTTPMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

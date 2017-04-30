@@ -37,80 +37,16 @@ public class BasicNetwork {
             print(report.prettyPrint())
         }
     }
-    
-    public struct EndPoint:CustomStringConvertible {
-        private let parts:[String]
-        
-        public var description: String {
-            get {
-                return parts.joined(separator: "/")
-            }
-        }
-        
-        public init(_ part:String...) {
-            parts = part
-        }
-    }
-    
-    public enum NetworkMode {
-        case localhost,development,production
-    }
-    
-    
-    public enum HTTPMethod:CustomStringConvertible {
-        
-        public var description: String {
-            switch self {
-            case .get:
-                return "GET"
-            case .post:
-                return "POST"
-            }
-        }
-        
-        case get,post
-        
-    }
-    
-    public enum BasicNetworkError:Error {
-        case httpError(statusCode:Int,description:String)
-        case urlCreationError(String)
-        case dataMissingError
-    }
-    
+
+
     public enum Response {
         case error(Error,report:RequestReport)
         case success(Data,report:RequestReport)
     }
-    
-    public struct RequestReport {
-        
-        public enum State {
-            case created,requestSent,responseReceived,responseDecoded
-        }
-        
-        public var url:URL?
-        public var state:State = .created
-        public var method:HTTPMethod?
-        public var statusCode:Int?
-        public var requestHeaders:[String:String]?
-        public var responseHeaders:[AnyHashable:Any]?
-        public var responseBody:String?
-        public var requestBody:String?
-        
-        public func prettyPrint() -> String {
-            return "===> Request report [\(statusCode ?? -1)] =========||\n\(url?.absoluteString ?? "?") (\(method?.description ?? "?"))\n" +
-            "\(requestBody ?? "[No request body]")\n" +
-            "\(responseBody ?? "[No response body]")\n" +
-            "=========\n"
-        }
-    }
-    
-    
+
     public typealias CompletionHandler = (Response) -> ()
     
     public var server:String = "http://0.0.0.0:8080"
-    public var mode:NetworkMode = .localhost
     public var timeOut:TimeInterval = 5
     public var cachePolicy:URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     
