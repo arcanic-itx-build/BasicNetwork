@@ -10,14 +10,14 @@ import XCTest
 @testable import BasicNetwork
 
 class BasicNetworkTests: XCTestCase {
-    
-    var network:BasicNetwork?
-    
+
+    var network: BasicNetwork?
+
     override func setUp() {
         super.setUp()
         self.network = BasicNetwork()
     }
-    
+
     func testRequestWithoutParams() {
         if let network = self.network {
             network.server = "http://google.com"
@@ -29,10 +29,8 @@ class BasicNetworkTests: XCTestCase {
                     print(report.prettyPrint())
                 }
             })
-            
-            
+
         }
     }
-    
-    
+
 }

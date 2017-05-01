@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum HTTPMethod:CustomStringConvertible {
+public enum HTTPMethod: CustomStringConvertible {
 
     public var description: String {
         switch self {
@@ -19,6 +19,6 @@ public enum HTTPMethod:CustomStringConvertible {
         }
     }
 
-    case get,post
+    case get, post
 
 }

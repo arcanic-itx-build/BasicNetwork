@@ -8,8 +8,8 @@
 
 import Foundation
 
-public enum BasicNetworkError:Error {
-    case httpError(statusCode:Int,description:String)
+public enum BasicNetworkError: Error {
+    case httpError(statusCode:Int, description:String)
     case urlCreationError(String)
     case dataMissingError
 }

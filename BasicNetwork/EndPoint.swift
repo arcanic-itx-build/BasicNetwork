@@ -8,8 +8,8 @@
 
 import Foundation
 
-public struct EndPoint:CustomStringConvertible {
-    private let parts:[String]
+public struct EndPoint: CustomStringConvertible {
+    private let parts: [String]
 
     public var description: String {
         get {
@@ -17,7 +17,7 @@ public struct EndPoint:CustomStringConvertible {
         }
     }
 
-    public init(_ part:String...) {
+    public init(_ part: String...) {
         parts = part
     }
 }
