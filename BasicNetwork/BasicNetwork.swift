@@ -8,62 +8,6 @@
 
 import Foundation
 
-extension URL {
-
-    public func withQueryStringParameters(parameters: [String:Any]) -> URL {
-
-        let queryString = parameters.flatMap { (keyValue) -> String? in
-            return "\(keyValue.key)=\(keyValue.value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        }.joined(separator: "&")
-
-        return URL(string: "\(self.absoluteString)?\(queryString)")!
-    }
-
-}
-
-extension String {
-    public func jsonIndented() -> String {
-        let characters = self.characters
-
-        var indentCount: Int = 0
-        var finalString = ""
-
-        characters.forEach { (character) in
-
-            if character == "}" || character == "]" {
-                indentCount = indentCount - 1
-                finalString.append("\n")
-                finalString.append(String(repeating: " ", count: indentCount))
-            }
-
-            finalString.append(character)
-
-            if character == "," {
-                finalString.append("\n")
-                finalString.append(String(repeating: " ", count: indentCount))
-            }
-
-            if character == "{" || character == "[" {
-                indentCount = indentCount + 1
-                finalString.append("\n")
-                finalString.append(String(repeating: " ", count: indentCount))
-            }
-
-            switch character {
-            case "{":
-                indentCount = indentCount + 1
-                break
-            case "}":
-                indentCount = indentCount - 1
-                break
-            default:
-                break
-            }
-        }
-        return finalString
-
-    }
-}
 
 public class BasicNetwork {
 
@@ -82,7 +26,7 @@ public class BasicNetwork {
     }
 
     public enum Response {
-        case error(Error, report:RequestReport?)
+        case error(NetworkError, report:RequestReport?)
         case success(Data, report:RequestReport?)
     }
 
@@ -106,7 +50,7 @@ public class BasicNetwork {
         }
 
         guard let url = URL(string:"\(self.server)/\(endPoint.description)") else {
-            completionHandler?(Response.error(BasicNetworkError.urlCreationError("\(self.server)\(endPoint)"), report: report))
+            completionHandler?(Response.error(.urlCreationError("\(self.server)\(endPoint)"), report: report))
             return
         }
 
@@ -128,7 +72,7 @@ public class BasicNetwork {
                 }
 
             } catch let error {
-                completionHandler?(Response.error(error, report: report))
+                completionHandler?(Response.error(.underlyingError(error), report: report))
             }
         }
 
@@ -143,12 +87,14 @@ public class BasicNetwork {
             report?.requestHeaders = request.allHTTPHeaderFields
 
             guard error == nil else {
-                completionHandler?(Response.error(error!, report: report))
+                if let error = error {
+                    completionHandler?(Response.error(.underlyingError(error), report: report))
+                }
                 return
             }
 
             guard let data = data else {
-                completionHandler?(Response.error(BasicNetworkError.dataMissingError, report: report))
+                completionHandler?(Response.error(.dataMissingError, report: report))
                 return
             }
 
@@ -160,7 +106,7 @@ public class BasicNetwork {
                 report?.responseHeaders = httpResponse.allHeaderFields
 
                 if (httpResponse.statusCode >= 400) {
-                    completionHandler?(Response.error(BasicNetworkError.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)), report: report))
+                    completionHandler?(Response.error(.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)), report: report))
                     return
                 }
             }
