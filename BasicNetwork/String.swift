@@ -48,6 +48,6 @@ extension String {
             }
         }
         return finalString
-        
+
     }
 }

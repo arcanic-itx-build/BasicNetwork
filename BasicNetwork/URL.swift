@@ -18,5 +18,5 @@ extension URL {
 
         return URL(string: "\(self.absoluteString)?\(queryString)")!
     }
-    
+
 }

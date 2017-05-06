@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public class BasicNetwork {
 
     public static let defaultCompletionHandler: CompletionHandler = {
