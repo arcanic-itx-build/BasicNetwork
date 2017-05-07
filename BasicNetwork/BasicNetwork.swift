@@ -31,7 +31,6 @@ public class BasicNetwork {
 
     public typealias CompletionHandler = (Response) -> Void
 
-    public var server: String = "http://0.0.0.0:8080"
     public var timeOut: TimeInterval = 5
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     public var generateReports: Bool = true
@@ -40,7 +39,7 @@ public class BasicNetwork {
 
     }
 
-    public func request(endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
+    public func request(server:String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
 
         var report: RequestReport?
 
@@ -48,8 +47,8 @@ public class BasicNetwork {
             report = RequestReport()
         }
 
-        guard let url = URL(string:"\(self.server)/\(endPoint.description)") else {
-            completionHandler?(Response.error(.urlCreationError("\(self.server)\(endPoint)"), report: report))
+        guard let url = URL(string:"\(server)/\(endPoint.description)") else {
+            completionHandler?(Response.error(.urlCreationError("\(server)/\(endPoint)"), report: report))
             return
         }
 
