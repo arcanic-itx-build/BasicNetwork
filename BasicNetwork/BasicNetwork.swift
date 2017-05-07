@@ -39,7 +39,7 @@ public class BasicNetwork {
 
     }
 
-    public func request(server:String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
+    public func request(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
 
         var report: RequestReport?
 
