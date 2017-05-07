@@ -43,14 +43,13 @@ public class BasicNetwork {
         completionHandler(.success(mockData, report: nil))
     }
 
-    public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler, mockJson: [String:Any]) {
+    public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler, mockJson: String) {
 
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: mockJson, options: .prettyPrinted)
-            completionHandler(.success(jsonData, report: nil))
-        } catch let error {
-            completionHandler(.error(.underlyingError(error), report: nil))
+        if let mockData = mockJson.data(using: .utf8) {
+            completionHandler(.success(mockData, report: nil))
+            return
         }
+        completionHandler(.error(.dataMissingError, report: nil))
     }
 
     public func request(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
