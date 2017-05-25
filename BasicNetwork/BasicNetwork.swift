@@ -13,6 +13,7 @@ public typealias CompletionHandler = (Response) -> Void
 public class BasicNetwork {
 
     public var timeOut: TimeInterval = 5
+    public var mockDelay: Double = 0.5
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     public var generateReports: Bool = true
 
@@ -21,7 +22,7 @@ public class BasicNetwork {
     }
 
     public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: @escaping CompletionHandler, mockData: Data) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.mockDelay) {
             completionHandler(.success(mockData, report: nil))
         }
     }
@@ -29,7 +30,7 @@ public class BasicNetwork {
     public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: @escaping CompletionHandler, mockJson: String) {
 
         if let mockData = mockJson.data(using: .utf8) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.mockDelay) {
                 completionHandler(.success(mockData, report: nil))
             }
             return
