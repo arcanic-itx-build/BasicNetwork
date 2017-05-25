@@ -14,6 +14,8 @@
 		A96B66BB1EAE16A900BE3DDC /* BasicNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = A96B66AD1EAE16A900BE3DDC /* BasicNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
 		A96B67211EAE8B6700BE3DDC /* BasicNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */; };
+		A982FF4B1ECC4B8900B9FF9D /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982FF4A1ECC4B8900B9FF9D /* Response.swift */; };
+		A982FF4F1ECC4EC600B9FF9D /* DefaultCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982FF4E1ECC4EC600B9FF9D /* DefaultCompletionHandler.swift */; };
 		A9C8B6051EB613D000C12559 /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B6041EB613D000C12559 /* EndPoint.swift */; };
 		A9C8B6071EB613F500C12559 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B6061EB613F500C12559 /* HTTPMethod.swift */; };
 		A9C8B6091EB6140B00C12559 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C8B6081EB6140B00C12559 /* NetworkError.swift */; };
@@ -40,6 +42,8 @@
 		A96B66B81EAE16A900BE3DDC /* BasicNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetworkTests.swift; sourceTree = "<group>"; };
 		A96B66BA1EAE16A900BE3DDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicNetwork.swift; sourceTree = "<group>"; };
+		A982FF4A1ECC4B8900B9FF9D /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		A982FF4E1ECC4EC600B9FF9D /* DefaultCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultCompletionHandler.swift; sourceTree = "<group>"; };
 		A9C8B6041EB613D000C12559 /* EndPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
 		A9C8B6061EB613F500C12559 /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		A9C8B6081EB6140B00C12559 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				A96B66F81EAE2C5200BE3DDC /* BasicNetwork.swift */,
+				A982FF4E1ECC4EC600B9FF9D /* DefaultCompletionHandler.swift */,
+				A982FF4A1ECC4B8900B9FF9D /* Response.swift */,
 				A9C8B60A1EB6141F00C12559 /* RequestReport.swift */,
 				A9C8B6081EB6140B00C12559 /* NetworkError.swift */,
 				A9C8B6061EB613F500C12559 /* HTTPMethod.swift */,
@@ -238,7 +244,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A982FF4B1ECC4B8900B9FF9D /* Response.swift in Sources */,
 				A9C8B6091EB6140B00C12559 /* NetworkError.swift in Sources */,
+				A982FF4F1ECC4EC600B9FF9D /* DefaultCompletionHandler.swift in Sources */,
 				A9C8B6051EB613D000C12559 /* EndPoint.swift in Sources */,
 				A9C8B60B1EB6141F00C12559 /* RequestReport.swift in Sources */,
 				A96B66F91EAE2C5200BE3DDC /* BasicNetwork.swift in Sources */,

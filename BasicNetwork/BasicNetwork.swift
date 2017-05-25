@@ -8,28 +8,9 @@
 
 import Foundation
 
+public typealias CompletionHandler = (Response) -> Void
+
 public class BasicNetwork {
-
-    public static let defaultCompletionHandler: CompletionHandler = {
-        (response) in
-        switch response {
-        case .error(let error, let report):
-            print("Error")
-            print(error)
-            print(report?.prettyPrint() ?? "No report generated")
-        case .success(let data, let report):
-            print("Success")
-            print(String(data: data, encoding: .utf8) ?? "Can't decode data: \(data)")
-            print(report?.prettyPrint() ?? "No report generated")
-        }
-    }
-
-    public enum Response {
-        case error(NetworkError, report:RequestReport?)
-        case success(Data, report:RequestReport?)
-    }
-
-    public typealias CompletionHandler = (Response) -> Void
 
     public var timeOut: TimeInterval = 5
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
@@ -39,14 +20,18 @@ public class BasicNetwork {
 
     }
 
-    public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler, mockData: Data) {
-        completionHandler(.success(mockData, report: nil))
+    public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: @escaping CompletionHandler, mockData: Data) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            completionHandler(.success(mockData, report: nil))
+        }
     }
 
-    public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler, mockJson: String) {
+    public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: @escaping CompletionHandler, mockJson: String) {
 
         if let mockData = mockJson.data(using: .utf8) {
-            completionHandler(.success(mockData, report: nil))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                completionHandler(.success(mockData, report: nil))
+            }
             return
         }
         completionHandler(.error(.dataMissingError, report: nil))
@@ -73,7 +58,7 @@ public class BasicNetwork {
             do {
                 switch method {
                 case .get:
-                    request.url = request.url?.withQueryStringParameters(parameters: parameters)
+                    request.url = url.withQueryStringParameters(parameters: parameters)
 
                 case .post:
                     let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
@@ -90,11 +75,8 @@ public class BasicNetwork {
         report?.url = request.url
         report?.method = method
 
-        report?.state = .requestSent
-
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
 
-            report?.state = .responseReceived
             report?.requestHeaders = request.allHTTPHeaderFields
 
             guard error == nil else {

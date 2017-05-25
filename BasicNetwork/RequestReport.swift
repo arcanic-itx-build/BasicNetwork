@@ -10,12 +10,7 @@ import Foundation
 
 public struct RequestReport {
 
-    public enum State {
-        case created, requestSent, responseReceived, responseDecoded
-    }
-
     public var url: URL?
-    public var state: State = .created
     public var method: HTTPMethod?
     public var statusCode: Int?
     public var requestHeaders: [String:String]?
@@ -29,4 +24,5 @@ public struct RequestReport {
             "\(responseBody ?? "[No response body]")\n" +
         "=========\n"
     }
+
 }
