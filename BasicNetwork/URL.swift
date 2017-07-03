@@ -11,12 +11,13 @@ import Foundation
 extension URL {
 
     public func withQueryStringParameters(parameters: [String:Any]) -> URL {
+        return URL(string: "\(self.absoluteString)?\(URL.encodedParameters(parameters: parameters))")!
+    }
 
-        let queryString = parameters.flatMap { (keyValue) -> String? in
+    public static func encodedParameters(parameters: [String:Any]) -> String {
+        return parameters.flatMap { (keyValue) -> String? in
             return "\(keyValue.key)=\(keyValue.value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
             }.joined(separator: "&")
-
-        return URL(string: "\(self.absoluteString)?\(queryString)")!
     }
 
 }

@@ -19,6 +19,6 @@ public enum HTTPMethod: CustomStringConvertible {
         }
     }
 
-    case get, post
+    case get, post(method:PostMethod)
 
 }

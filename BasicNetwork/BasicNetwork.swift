@@ -61,11 +61,22 @@ public class BasicNetwork {
                 case .get:
                     request.url = url.withQueryStringParameters(parameters: parameters)
 
-                case .post:
-                    let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
-                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                    request.httpBody = requestBody
-                    report?.requestBody = String(data: requestBody, encoding: .utf8)?.jsonIndented()
+                case .post(let postMethod):
+
+
+                    switch postMethod {
+                    case .json:
+                        let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+                        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                        request.httpBody = requestBody
+                        report?.requestBody = String(data: requestBody, encoding: .utf8)?.jsonIndented()
+                    case .urlencoded:
+                        let requestBody = URL.encodedParameters(parameters: parameters)
+                        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+                        request.httpBody = requestBody.data(using: .utf8)
+                        report?.requestBody = requestBody
+                    }
+
                 }
 
             } catch let error {
