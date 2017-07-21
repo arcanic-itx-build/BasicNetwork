@@ -19,7 +19,13 @@ public struct RequestReport {
     public var requestBody: String?
 
     public func prettyPrint() -> String {
+
+        let headerString = requestHeaders?.reduce("", { (partial, headerField) -> String in
+            return "\(partial)\n\(headerField.key):\(headerField.value)"
+        })
+
         return "===> Request report [\(statusCode ?? -1)] =========||\n\(url?.absoluteString ?? "?") (\(method?.description ?? "?"))\n" +
+            "(\(headerString ?? "?"))\n" +
             "\(requestBody ?? "[No request body]")\n" +
             "\(responseBody ?? "[No response body]")\n" +
         "=========\n"

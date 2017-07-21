@@ -16,6 +16,7 @@ public class BasicNetwork {
     public var mockDelay: Double = 0.5
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     public var generateReports: Bool = true
+    public var persistentHeaders = [(field:String,value:String)]()
 
     public init() {
 
@@ -54,6 +55,10 @@ public class BasicNetwork {
         var request = URLRequest(url: url, cachePolicy: self.cachePolicy, timeoutInterval: self.timeOut)
 
         request.httpMethod = method.description
+
+        for header in self.persistentHeaders {
+            request.addValue(header.value, forHTTPHeaderField: header.field)
+        }
 
         if let parameters = parameters {
             do {
