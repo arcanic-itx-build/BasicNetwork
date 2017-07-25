@@ -10,7 +10,7 @@ import Foundation
 
 public typealias CompletionHandler = (Response) -> Void
 
-public class BasicNetwork {
+open class BasicNetwork {
 
     public var timeOut: TimeInterval = 5
     public var mockDelay: Double = 0.5
