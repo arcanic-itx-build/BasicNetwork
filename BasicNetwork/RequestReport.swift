@@ -11,7 +11,7 @@ import Foundation
 public struct RequestReport {
 
     public var url: URL?
-    public var method: HTTPMethod?
+    public var method: String?
     public var statusCode: Int?
     public var requestHeaders: [String:String]?
     public var responseHeaders: [AnyHashable:Any]?
@@ -24,10 +24,10 @@ public struct RequestReport {
             return "\(partial)\n\(headerField.key):\(headerField.value)"
         })
 
-        return "===> Request report [\(statusCode ?? -1)] =========||\n\(url?.absoluteString ?? "?") (\(method?.description ?? "?"))\n" +
+        return "===> Request report [\(statusCode ?? -1)] =========||\n\(url?.absoluteString ?? "?") (\(method ?? "?"))\n" +
             "(\(headerString ?? "?"))\n" +
-            "\(requestBody ?? "[No request body]")\n" +
-            "\(responseBody ?? "[No response body]")\n" +
+            "\(requestBody?.truncate(length: 2000) ?? "[No request body]")\n" +
+            "\(responseBody?.truncate(length: 2000) ?? "[No response body]")\n" +
         "=========\n"
     }
 

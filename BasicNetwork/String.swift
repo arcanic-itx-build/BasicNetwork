@@ -50,4 +50,12 @@ extension String {
         return finalString
 
     }
+
+    func truncate(length: Int, trailing: String = "…") -> String {
+        if self.characters.count > length {
+            return String(self.characters.prefix(length)) + trailing
+        } else {
+            return self
+        }
+    }
 }

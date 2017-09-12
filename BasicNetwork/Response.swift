@@ -9,6 +9,6 @@
 import Foundation
 
 public enum Response {
-    case error(NetworkError, report:RequestReport?)
+    case error(Error, report:RequestReport?)
     case success(Data, report:RequestReport?)
 }

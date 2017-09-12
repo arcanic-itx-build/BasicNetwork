@@ -22,6 +22,14 @@ open class BasicNetwork {
 
     }
 
+    public func urlRequest(url:URL) -> URLRequest {
+        var request = URLRequest(url: url, cachePolicy: self.cachePolicy, timeoutInterval: self.timeOut)
+        for header in self.persistentHeaders {
+            request.addValue(header.value, forHTTPHeaderField: header.field)
+        }
+        return request
+    }
+
     public func mockRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: @escaping CompletionHandler, mockData: Data) {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.mockDelay) {
             completionHandler(.success(mockData, report: nil))
@@ -36,10 +44,41 @@ open class BasicNetwork {
             }
             return
         }
-        completionHandler(.error(.dataMissingError, report: nil))
+        completionHandler(.error(NetworkError.dataMissingError, report: nil))
     }
 
-    public func request(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
+    public func createRequest(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod) throws -> (URLRequest) {
+        guard let url = URL(string:"\(server)/\(endPoint.description)") else {
+            throw NetworkError.urlCreationError("\(server)/\(endPoint)")
+        }
+
+        var request = self.urlRequest(url: url)
+
+        request.httpMethod = method.description
+
+        if let parameters = parameters {
+            switch method {
+            case .get:
+                request.url = url.withQueryStringParameters(parameters: parameters)
+            case .post(let postMethod):
+                switch postMethod {
+                case .json:
+                    let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                    request.httpBody = requestBody
+                case .urlencoded:
+                    let requestBody = URL.encodedParameters(parameters: parameters)
+                    request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+                    request.httpBody = requestBody.data(using: .utf8)
+                }
+
+            }
+        }
+
+        return request
+    }
+
+    public func runRequest(request:URLRequest, completionHandler: CompletionHandler? = nil) {
 
         var report: RequestReport?
 
@@ -47,50 +86,11 @@ open class BasicNetwork {
             report = RequestReport()
         }
 
-        guard let url = URL(string:"\(server)/\(endPoint.description)") else {
-            completionHandler?(Response.error(.urlCreationError("\(server)/\(endPoint)"), report: report))
-            return
+        if let body = request.httpBody {
+            report?.requestBody = String(data: body, encoding: .utf8)?.jsonIndented()
         }
-
-        var request = URLRequest(url: url, cachePolicy: self.cachePolicy, timeoutInterval: self.timeOut)
-
-        request.httpMethod = method.description
-
-        for header in self.persistentHeaders {
-            request.addValue(header.value, forHTTPHeaderField: header.field)
-        }
-
-        if let parameters = parameters {
-            do {
-                switch method {
-                case .get:
-                    request.url = url.withQueryStringParameters(parameters: parameters)
-
-                case .post(let postMethod):
-
-
-                    switch postMethod {
-                    case .json:
-                        let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
-                        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                        request.httpBody = requestBody
-                        report?.requestBody = String(data: requestBody, encoding: .utf8)?.jsonIndented()
-                    case .urlencoded:
-                        let requestBody = URL.encodedParameters(parameters: parameters)
-                        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-                        request.httpBody = requestBody.data(using: .utf8)
-                        report?.requestBody = requestBody
-                    }
-
-                }
-
-            } catch let error {
-                completionHandler?(Response.error(.underlyingError(error), report: report))
-            }
-        }
-
         report?.url = request.url
-        report?.method = method
+        report?.method = request.httpMethod
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
 
@@ -98,13 +98,17 @@ open class BasicNetwork {
 
             guard error == nil else {
                 if let error = error {
-                    completionHandler?(Response.error(.underlyingError(error), report: report))
+                    DispatchQueue.main.async {
+                        completionHandler?(Response.error(error, report: report))
+                    }
                 }
                 return
             }
 
             guard let data = data else {
-                completionHandler?(Response.error(.dataMissingError, report: report))
+                DispatchQueue.main.async {
+                    completionHandler?(Response.error(NetworkError.dataMissingError, report: report))
+                }
                 return
             }
 
@@ -116,7 +120,9 @@ open class BasicNetwork {
                 report?.responseHeaders = httpResponse.allHeaderFields
 
                 if (httpResponse.statusCode >= 400) {
-                    completionHandler?(Response.error(.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)), report: report))
+                    DispatchQueue.main.async {
+                        completionHandler?(Response.error(NetworkError.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode),data:data), report: report))
+                    }
                     return
                 }
             }
@@ -124,9 +130,20 @@ open class BasicNetwork {
             DispatchQueue.main.async {
                 completionHandler?(Response.success(data, report: report))
             }
-
+            
         }
         task.resume()
+        
+    }
+
+    public func request(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
+
+        do {
+            let request = try self.createRequest(server: server, endPoint: endPoint, parameters: parameters, method: method)
+            self.runRequest(request: request,completionHandler: completionHandler)
+        } catch {
+            completionHandler?(Response.error(NetworkError.errorCreatingRequest,report: RequestReport()))
+        }
 
     }
 
