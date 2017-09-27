@@ -16,13 +16,13 @@ open class BasicNetwork {
     public var mockDelay: Double = 0.5
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     public var generateReports: Bool = true
-    public var persistentHeaders = [(field:String,value:String)]()
+    public var persistentHeaders = [(field:String, value:String)]()
 
     public init() {
 
     }
 
-    public func urlRequest(url:URL) -> URLRequest {
+    public func urlRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: url, cachePolicy: self.cachePolicy, timeoutInterval: self.timeOut)
         for header in self.persistentHeaders {
             request.addValue(header.value, forHTTPHeaderField: header.field)
@@ -78,7 +78,7 @@ open class BasicNetwork {
         return request
     }
 
-    public func runRequest(request:URLRequest, completionHandler: CompletionHandler? = nil) {
+    public func runRequest(request: URLRequest, completionHandler: CompletionHandler? = nil) {
 
         var report: RequestReport?
 
@@ -121,7 +121,7 @@ open class BasicNetwork {
 
                 if (httpResponse.statusCode >= 400) {
                     DispatchQueue.main.async {
-                        completionHandler?(Response.error(NetworkError.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode),data:data), report: report))
+                        completionHandler?(Response.error(NetworkError.httpError(statusCode: httpResponse.statusCode, description: HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode), data:data), report: report))
                     }
                     return
                 }
@@ -130,19 +130,19 @@ open class BasicNetwork {
             DispatchQueue.main.async {
                 completionHandler?(Response.success(data, report: report))
             }
-            
+
         }
         task.resume()
-        
+
     }
 
     public func request(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
 
         do {
             let request = try self.createRequest(server: server, endPoint: endPoint, parameters: parameters, method: method)
-            self.runRequest(request: request,completionHandler: completionHandler)
+            self.runRequest(request: request, completionHandler: completionHandler)
         } catch {
-            completionHandler?(Response.error(NetworkError.errorCreatingRequest,report: RequestReport()))
+            completionHandler?(Response.error(NetworkError.errorCreatingRequest, report: RequestReport()))
         }
 
     }

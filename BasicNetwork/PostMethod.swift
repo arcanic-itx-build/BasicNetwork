@@ -10,8 +10,6 @@ import Foundation
 
 public enum PostMethod {
 
-    case json,urlencoded
-
-    
+    case json, urlencoded
 
 }
