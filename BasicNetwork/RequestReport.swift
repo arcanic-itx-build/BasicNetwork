@@ -26,8 +26,8 @@ public struct RequestReport {
 
         return "===> Request report [\(statusCode ?? -1)] =========||\n\(url?.absoluteString ?? "?") (\(method ?? "?"))\n" +
             "(\(headerString ?? "?"))\n" +
-            "\(requestBody?.truncate(length: 2000) ?? "[No request body]")\n" +
-            "\(responseBody?.truncate(length: 2000) ?? "[No response body]")\n" +
+            "\(requestBody?.truncate(length: 5000) ?? "[No request body]")\n" +
+            "\(responseBody?.truncate(length: 5000) ?? "[No response body]")\n" +
         "=========\n"
     }
 

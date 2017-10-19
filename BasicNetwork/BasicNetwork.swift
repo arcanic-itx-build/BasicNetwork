@@ -18,8 +18,14 @@ open class BasicNetwork {
     public var generateReports: Bool = true
     public var persistentHeaders = [(field:String, value:String)]()
 
-    public init() {
+    private var session:URLSession
 
+    public init() {
+        let config = URLSessionConfiguration.default
+        config.httpMaximumConnectionsPerHost = 20
+        config.timeoutIntervalForRequest = 20
+        config.timeoutIntervalForResource = 60
+        self.session = URLSession(configuration: config)
     }
 
     public func urlRequest(url: URL) -> URLRequest {
@@ -78,7 +84,7 @@ open class BasicNetwork {
         return request
     }
 
-    public func runRequest(request: URLRequest, completionHandler: CompletionHandler? = nil) {
+    public func createTask(request: URLRequest, completionHandler: CompletionHandler? = nil) -> URLSessionDataTask {
 
         var report: RequestReport?
 
@@ -92,7 +98,7 @@ open class BasicNetwork {
         report?.url = request.url
         report?.method = request.httpMethod
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        let task = self.session.dataTask(with: request) { data, response, error in
 
             report?.requestHeaders = request.allHTTPHeaderFields
 
@@ -132,8 +138,11 @@ open class BasicNetwork {
             }
 
         }
-        task.resume()
+        return task
+    }
 
+    public func runRequest(request: URLRequest, completionHandler: CompletionHandler? = nil) {
+        self.createTask(request: request, completionHandler: completionHandler).resume()
     }
 
     public func request(server: String, endPoint: EndPoint, parameters: [String:Any]?, method: HTTPMethod, completionHandler: CompletionHandler? = nil) {
