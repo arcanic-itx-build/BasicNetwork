@@ -72,10 +72,12 @@ open class BasicNetwork {
                     let requestBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
                     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                     request.httpBody = requestBody
+                    request.addValue("\(request.httpBody?.count ?? 0)", forHTTPHeaderField: "Content-Length")
                 case .urlencoded:
                     let requestBody = URL.encodedParameters(parameters: parameters)
                     request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
                     request.httpBody = requestBody.data(using: .utf8)
+                    request.addValue("\(request.httpBody?.count ?? 0)", forHTTPHeaderField: "Content-Length")
                 }
 
             }
