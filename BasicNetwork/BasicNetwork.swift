@@ -12,7 +12,7 @@ public typealias CompletionHandler = (Response) -> Void
 
 open class BasicNetwork {
 
-    public var timeOut: TimeInterval = 5
+    public var timeOut: TimeInterval = 120
     public var mockDelay: Double = 0.5
     public var cachePolicy: URLRequest.CachePolicy = .reloadIgnoringLocalCacheData
     public var generateReports: Bool = true
